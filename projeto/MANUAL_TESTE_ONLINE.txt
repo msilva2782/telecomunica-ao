@@ -1,0 +1,162 @@
+﻿MANUAL - COMO OS COLEGAS TESTAM O ROBÔ DE QUALQUER COMPUTADOR
+=============================================================
+
+RESUMO
+  - Você (o ATOR) liga tudo no seu computador e recebe um link público (https://...).
+  - Você manda o link de CLIENTE para o colega (WhatsApp, e-mail...).
+  - O colega abre no Chrome ou Edge, de qualquer computador e de qualquer rede.
+    Para ele é instantâneo: não instala nada, não precisa de conta, não aparece aviso de segurança.
+  - Um colega por vez. O link muda a cada vez que você liga.
+
+
+-------------------------------------------------------------
+PARTE 1 - SÓ UMA VEZ, NO SEU COMPUTADOR
+-------------------------------------------------------------
+
+1. Prepare a pasta (se ainda não fez):
+   Dê dois cliques em  preparar_portatil.bat  e espere terminar (1 a 5 minutos, com internet).
+   Ele cria na Área de Trabalho o atalho "Robô - modo ator (internet)".
+
+2. Instale o cloudflared (é o programa que cria o link público, gratuito):
+   a) Clique no menu Iniciar, digite  PowerShell  e abra.
+   b) Cole este comando e aperte Enter:
+          winget install Cloudflare.cloudflared
+   c) Se perguntar algo, digite  S  (ou Y) e Enter.
+   d) Quando terminar, FECHE o PowerShell.
+
+   Se o winget não existir no seu Windows: atualize o "Instalador de Aplicativo" pela
+   Microsoft Store e tente de novo.
+
+3. (Opcional) IA nas respostas: veja GUIA_IA.txt.
+
+
+-------------------------------------------------------------
+PARTE 2 - A CADA SESSÃO DE TESTES (VOCÊ, O ATOR)
+-------------------------------------------------------------
+
+1. Coloque o FONE DE OUVIDO.
+
+2. Dê dois cliques no atalho "Robô - modo ator (internet)" da Área de Trabalho
+   (ou em  iniciar_ator_internet.bat  dentro da pasta do projeto).
+   - Abre uma janela chamada SERVIDOR. NÃO feche essa janela enquanto estiver testando.
+   - Em 10 a 30 segundos aparece "MODO ATOR PRONTO" com dois links.
+   - Se o Windows perguntar sobre o Firewall: clique em "Permitir acesso".
+
+3. A página do ATOR abre sozinha no seu navegador.
+   Clique em  Começar  e permita o microfone.
+
+4. Abra o arquivo  LINKS.txt  (na pasta do projeto) e copie o link de CLIENTE.
+   Ele é parecido com:
+       https://palavras-aleatorias.trycloudflare.com/conversa/?token=XXXXXXXXXXXXXXXXXXXX
+
+5. Mande esse link para o colega.
+
+   ATENÇÃO: mande SÓ o link de CLIENTE (o que tem /conversa/).
+            NUNCA mande o link de ATOR (o que tem /ator/): quem tiver esse link controla o robô.
+
+6. Quando o colega entrar, você vê e ouve ele na página do ator. Converse normalmente.
+
+7. Para terminar: feche a janela SERVIDOR. O link para de funcionar na hora.
+
+
+-------------------------------------------------------------
+PARTE 3 - O QUE O COLEGA FAZ (copie e mande junto com o link)
+-------------------------------------------------------------
+
+   1. Abra o link no Google Chrome ou no Microsoft Edge (no computador, não no celular).
+   2. Clique em "Testar câmera e microfone" e clique em PERMITIR nas duas perguntas.
+   3. Confira se ficou tudo verde e clique em "Começar".
+   4. A tela vira o rosto do robô. É só conversar com ele.
+
+   Dicas para o colega:
+   - Use caixa de som em volume médio ou fone (som alto demais volta como eco).
+   - Fique a até 1 metro do computador, num lugar sem barulho.
+   - Tecla F: tela cheia.  Tecla D: mostra um diagnóstico (se algo não funcionar).
+
+
+-------------------------------------------------------------
+PARTE 4 - LIMITES (IMPORTANTE SABER)
+-------------------------------------------------------------
+
+  - UM COLEGA POR VEZ. Se dois abrirem juntos, o segundo fica esperando até o primeiro sair.
+    Combine horários.
+
+  - SEU COMPUTADOR TEM QUE ESTAR LIGADO, com a janela SERVIDOR aberta e você na página do ator.
+    Se o computador dormir ou desligar a internet, o link cai.
+    Dica: Configurações > Sistema > Energia > "Suspender" = Nunca (enquanto testa).
+
+  - O LINK MUDA a cada vez que você roda o iniciar_ator_internet.bat.
+    Mande o link novo a cada sessão.
+
+  - CELULAR: a página é feita para computador. No celular pode funcionar parcialmente
+    (o reconhecimento de fala e as expressões automáticas podem falhar).
+
+  - ALGUMAS REDES BLOQUEIAM A CHAMADA: a página do robô abre, mas não chega som nem vídeo.
+    Acontece em 4G/5G, Wi-Fi de empresa e algumas redes de faculdade. Nesse caso:
+      * peça para o colega usar outra rede (Wi-Fi de casa costuma funcionar), ou
+      * configure um servidor TURN (repassa o áudio e o vídeo quando a ligação direta é
+        bloqueada; veja "Variáveis úteis" no README.md: TURN_URL, TURN_USER, TURN_PASS).
+
+  - O link gratuito do Cloudflare é para testes: não tem garantia de ficar no ar.
+
+
+-------------------------------------------------------------
+PARTE 5 - SE ALGO DER ERRADO
+-------------------------------------------------------------
+
+  "Para -Internet instale o cloudflared"
+      -> Faça a Parte 1, passo 2. Depois feche e abra de novo o iniciar_ator_internet.bat.
+
+  "Nao consegui obter o link publico"
+      -> Sua internet caiu ou bloqueia o Cloudflare. Feche a janela SERVIDOR e tente de novo.
+         Se continuar, use outra rede (ex.: roteador do celular).
+
+  O colega abre o link e aparece erro / página não encontrada
+      -> O link é de uma sessão antiga, ou a janela SERVIDOR foi fechada.
+         Ligue de novo e mande o link novo do LINKS.txt.
+
+  O rosto do robô fica "dormindo" (olhos fechados) e nada acontece
+      -> Você não está na página do ator, ou não clicou em Começar nela.
+      -> Ou já tem outro colega conectado (um por vez).
+
+  Abre o rosto do robô, mas não tem som nem vídeo
+      -> Rede que bloqueia a chamada (veja Parte 4). Teste com outra rede.
+
+  Você ouve o colega robótico, picotado ou baixo
+      -> Olhe "Rede do áudio" na página do ator. Se "reconstruído" estiver vermelho
+         (mais de 3%), a internet de um dos dois está ruim: aproximem-se do roteador,
+         usem cabo ou Wi-Fi 5 GHz e fechem downloads/vídeos.
+      -> Se a rede estiver verde, troque o Tratamento para "Natural" e aumente o volume.
+      -> Use "Gravar 10 s para análise" para guardar o áudio e comparar.
+
+  O colega se ouve com eco
+      -> Você está sem fone. Use fone de ouvido.
+
+  O rosto do robô não reage ao que o colega fala
+      -> O colega precisa usar Chrome ou Edge, com internet. Peça para apertar D e ver o erro.
+
+  A página do ator diz "Código recusado"
+      -> Abra o link de ATOR que está no LINKS.txt (ele tem o código certo).
+
+
+-------------------------------------------------------------
+PARTE 6 - TESTAR SEM INTERNET PÚBLICA (MESMA REDE WI-FI)
+-------------------------------------------------------------
+
+  Se os colegas estiverem na mesma rede que você (ex.: mesma sala):
+  - Use  iniciar_ator.bat  (sem "internet"). Não precisa do cloudflared.
+  - O link de CLIENTE começa com https://192.168... (está no LINKS.txt).
+  - Na primeira vez o navegador avisa "Sua conexão não é particular":
+    clique em Avançado > Continuar. Isso é normal nesse modo.
+  - Se o Windows marcar a rede como "Pública", troque para "Privada"
+    (Configurações > Rede e Internet > Wi-Fi > Propriedades).
+
+
+-------------------------------------------------------------
+CUIDADOS COM QUEM PARTICIPA
+-------------------------------------------------------------
+
+  - Se usar a IA com "IA enxerga a câmera", uma foto da câmera do colega vai para o Google
+    a cada resposta. Avise e peça autorização antes.
+  - No fim da conversa, conte que era um experimento com uma pessoa fazendo o papel do robô.
+  - Mais detalhes: GUIA_MODO_ATOR.txt e GUIA_IA.txt.

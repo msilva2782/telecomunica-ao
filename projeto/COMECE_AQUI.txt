@@ -1,0 +1,50 @@
+COMECE AQUI
+===========
+
+PARA RODAR EM QUALQUER COMPUTADOR, NA HORA (sem instalar nada)
+  O projeto usa um Python próprio, que fica dentro da pasta  python_portatil.
+  1. Num computador COM INTERNET, dê dois cliques em  preparar_portatil.bat  (só uma vez;
+     leva de 1 a 5 minutos). Ele baixa o Python 3.12 e as bibliotecas para dentro da pasta.
+     Ele também cria 3 atalhos na sua Área de Trabalho: "Robô - modo ator",
+     "Robô - modo ator (internet)" e "Robô - teleoperação". Depois é só usar os atalhos.
+     Se mover a pasta, rode qualquer .bat da pasta uma vez: os atalhos passam a apontar
+     para o lugar novo (ou rode o preparar_portatil.bat de novo).
+     (Se você esquecer, o iniciar.bat / iniciar_ator.bat faz isso sozinho na primeira vez.)
+  2. Copie a pasta INTEIRA (com python_portatil dentro) para o pendrive / outro computador.
+     Para mandar por zip: clique com o botão direito na pasta > Compactar.
+  3. No outro computador (Windows 10/11 64 bits): descompacte (não rode de dentro do zip) e dê
+     dois cliques em  iniciar_ator.bat  ou  iniciar.bat. Abre na hora, sem internet para instalar
+     e sem precisar do Python instalado.
+
+COLEGAS TESTANDO DE QUALQUER COMPUTADOR (pela internet)
+  Dê dois cliques em  iniciar_ator_internet.bat  e mande o link de CLIENTE.
+  Passo a passo completo: MANUAL_TESTE_ONLINE.txt
+
+MODO ATOR (alguém finge ser o robô)
+  1. Dê dois cliques em  iniciar_ator.bat.
+     A página do ATOR abre sozinha neste computador. Use fone de ouvido.
+     Se aparecer "Sua conexão não é particular": Avançado > Continuar.
+     Se o Windows perguntar sobre o Firewall: Permitir acesso.
+  2. Clique em Começar e permita o microfone.
+  3. No OUTRO computador (mesmo Wi-Fi), abra no Chrome ou Edge o link de CLIENTE que está em
+     LINKS.txt (o arquivo é recriado a cada execução, com o IP certo deste computador).
+     Faça o mesmo "Avançado > Continuar", clique em "Testar câmera e microfone",
+     permita, e clique em Começar.
+
+  Detalhes, teclas e o que fazer se der erro: GUIA_MODO_ATOR.txt
+
+MODO ORIGINAL DO TRABALHO (robô Python com webcam + operador)
+  Dê dois cliques em  iniciar.bat. A página do OPERADOR abre sozinha.
+
+Para desligar: feche a janela SERVIDOR.
+Para TESTAR SOZINHO num computador só: rode iniciar_ator.bat, abra o link de ATOR numa aba e o
+link de CLIENTE em outra (troque o IP por 127.0.0.1). Use fone, senão o som vira eco.
+
+SE DER ERRO
+  - "Nao foi possivel preparar o Python": o computador estava sem internet na primeira vez.
+    Rode preparar_portatil.bat num computador com internet e copie a pasta inteira.
+  - Algo estranho depois de copiar a pasta: rode  iniciar.bat -Reinstalar  (refaz python_portatil).
+  - "A porta 8000 ja esta em uso": ficou uma janela SERVIDOR aberta. O script usa outra porta
+    sozinho, mas o melhor é fechar a janela antiga.
+  - O outro computador não abre o link: a rede está como "Pública" no Windows. Troque para
+    "Privada" (Configurações > Rede e Internet > Wi-Fi > Propriedades) ou use -Internet.

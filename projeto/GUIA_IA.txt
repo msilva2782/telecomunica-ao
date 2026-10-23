@@ -1,0 +1,111 @@
+GUIA_IA.txt - RESPOSTAS DE IA NO MODO ATOR
+==========================================
+
+O que faz
+---------
+O cliente fala com o rosto do robo. A pagina do ATOR manda o que ele disse ao
+servidor, que pergunta a uma IA (API do Google Gemini) e devolve uma resposta curta.
+O robo fala essa resposta com a voz sintetizada e o rosto assume a emocao dela.
+A chave da API fica so no computador do servidor; nenhuma pagina a ve.
+
+Como alternar (pagina do ator)
+------------------------------
+  No topo da pagina ha o botao "Quem responde:  [Manual (voce)] [IA]".
+  A tecla I tambem alterna (fora dos campos de texto). A pagina SEMPRE comeca em
+  Manual: a IA nunca fala por voce sem que voce ligue.
+  - Manual : so voce responde (microfone, frases prontas, texto).
+  - IA     : no painel "Respostas da IA" escolha como ela responde:
+      * Sugerir    : a IA escreve a resposta num quadro. Voce le, edita se quiser
+                     e aperta Enter (ou "Falar"). Nada sai sem a sua aprovacao.
+      * Automatica : o robo responde sozinho. Se voce falar ou digitar uma frase,
+                     a resposta que a IA estava preparando e descartada.
+  Voltar ao Manual a qualquer momento cancela a resposta que a IA estava preparando.
+
+Instalacao (uma vez)
+--------------------
+1) Chave da API (Google Gemini)
+   - Entre em https://aistudio.google.com/apikey com uma conta Google e clique
+     em "Create API key". Copie a chave (comeca com AIza).
+
+2) Guardar a chave no computador que roda o servidor (o do ator)
+   Opcao A (recomendada) - PowerShell, uma vez:
+       setx GOOGLE_API_KEY "AIza-COLE-AQUI"
+     Rode o iniciar_ator.bat de novo (ele ja enxerga a chave nova).
+   Opcao B - crie o arquivo chave_ia.txt dentro da pasta do projeto, com a
+     chave numa linha. CUIDADO: se a pasta estiver no OneDrive, a chave vai
+     para a nuvem; nao envie esse arquivo a ninguem nem dentro de zips.
+   A chave fica no COMPUTADOR (opcao A) ou na PASTA (opcao B). Se copiar a
+   pasta para outro computador, a opcao A precisa ser feita de novo nele.
+
+A vez de falar (para a IA nao atropelar ninguem)
+-----------------------------------------------
+  Painel "Respostas da IA":
+  - "Esperar o cliente terminar de falar" (padrao 1,6 s de silencio): a IA so fala
+    depois desse silencio. Pausas no meio da frase nao disparam resposta; as partes
+    viram um pedido so. Aumente se o cliente fala devagar; diminua para ficar mais agil.
+  - "Nunca falar por cima de voce, do robo ou do cliente": a resposta pronta fica
+    esperando ate ninguem estar falando. Se o cliente voltar a falar, a resposta e
+    descartada e a IA pede de novo com a frase completa. Se em 8 s nao houver uma
+    brecha, a resposta vira sugestao para voce decidir.
+  - "Se voce responder pelo microfone, a IA fica quieta": falando por mais de 0,7 s,
+    a IA desiste daquela resposta.
+  - "hum", "aham", "e", "ta" sozinhos nao recebem resposta, e o que o reconhecimento
+    ouve enquanto o robo fala (eco da voz do robo) e ignorado pela IA.
+  - A IA ja comeca a pensar 0,8 s depois do cliente parar, para nao demorar.
+
+Visao: a IA enxerga a camera
+----------------------------
+  Painel "Visao do robo" na pagina do ator:
+  - Deteccao de rosto (MediaPipe, roda no navegador do ator, gratis): o quadro verde
+    aparece em volta do rosto no video. Diz quantas pessoas ha, onde estao, se estao
+    sorrindo ou surpresas. NAO reconhece quem e a pessoa.
+  - "Olhos do robo seguem a pessoa": os olhos do rosto na tela apontam para ela.
+  - "Reagir ao rosto": o robo sorri quando a pessoa sorri e se espanta junto.
+  - "IA enxerga a camera": cada pergunta vai com uma foto do momento (JPEG pequeno)
+    e o resumo da deteccao. Da para perguntar "o que voce esta vendo?", "que cor e a
+    minha blusa?", "quantos dedos tem aqui?".
+  - "IA cumprimenta quando alguem aparece": com a IA ligada, quando uma pessoa
+    chega na frente da camera a IA prepara um cumprimento (no maximo 1 por minuto).
+    Em Sugerir ele aparece para voce aprovar; em Automatica o robo fala sozinho.
+  - Botao "O que a IA esta vendo?" (tecla V): mostra a descricao da IA no quadro de
+    sugestao, mesmo em Manual. Bom para conferir antes de ligar a IA.
+  A deteccao de rosto precisa dos arquivos do MediaPipe: o preparar_portatil.bat
+  baixa para ator\vendor (funciona sem internet); sem eles a pagina busca na internet.
+
+Uso
+---
+1) Rode iniciar_ator.bat, abra a pagina do ator e clique em Comecar.
+2) No painel "Respostas da IA" deve aparecer: pronta (nome do modelo).
+3) Clique em "IA" no topo (modo Sugerir) para comecar. Peca ao cliente uma pergunta simples
+   ("quanto e dois mais dois?", "que dia e hoje?") e veja a sugestao aparecer.
+4) Quando confiar, marque "Automatica" no painel.
+
+Ajustes (variaveis de ambiente, opcionais)
+------------------------------------------
+  IA_MODELO          modelo usado (padrao: gemini-3.6-flash)
+  IA_MODELO_RESERVA  usado se o principal falhar (padrao: gemini-3.5-flash-lite)
+  IA_LIMITE_POR_MIN  maximo de respostas por minuto (padrao: 20; protege o custo)
+  IA_MAX_TOKENS      tamanho maximo da resposta (padrao: 200)
+  IA_PERSONA         texto extra de personalidade, ex.:
+                     setx IA_PERSONA "Voce se chama Robo Beto e gosta de futebol."
+
+Se algo der errado (aparece em vermelho no painel)
+--------------------------------------------------
+  "sem chave da API no servidor"   -> passo 2; reabra o iniciar_ator.bat.
+    "a chave da API foi recusada"    -> chave errada, sem credito ou revogada.
+  "sem resposta da API"            -> o computador do servidor esta sem internet.
+  "muitos pedidos por minuto"      -> aumente IA_LIMITE_POR_MIN ou espere.
+  Quando a IA falha, o modo manual continua funcionando normalmente.
+
+Cuidados
+--------
+- O texto que o cliente fala (transcrito pelo navegador) e enviado ao Google
+  para gerar a resposta. Avise quem participa.
+- Com "IA enxerga a camera" ligado, uma FOTO da camera do cliente vai ao Google a
+  cada resposta da IA. Avise quem participa (e peca autorizacao para uso de imagem
+  na pesquisa). Desmarque a opcao para mandar so o texto.
+- A IA nao reconhece pessoas e foi instruida a nao palpitar idade, etnia ou outros
+  dados sensiveis. Fora a foto, ela so sabe a conversa, a data e a hora.
+- Em pesquisa, registre no relatorio que as respostas desse modo sao de uma IA
+  de verdade (e nao do ator), e se foram aprovadas ou automaticas. O botao
+  "Baixar conversa" marca cada fala como CLIENTE, ROBO (IA) ou ROBO (texto).

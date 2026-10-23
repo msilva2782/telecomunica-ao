@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Operador do robô</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<header>
+  <h1>Operador do robô</h1>
+  <div class="login">
+    <input id="token" type="password" placeholder="Token do operador" autocomplete="off">
+    <button id="btnEntrar">Entrar</button>
+  </div>
+</header>
+
+<main>
+  <div class="coluna">
+    <section class="video">
+      <video id="video" autoplay playsinline></video>
+      <div id="semVideo" class="sem-video">Sem vídeo</div>
+    </section>
+
+    <section class="terminal">
+      <div class="term-titulo">Terminal do robô</div>
+      <div id="termSaida" class="term-saida"></div>
+      <form id="termForm" class="term-linha" autocomplete="off">
+        <span class="prompt">&gt;</span>
+        <input id="termEntrada" type="text" maxlength="500" disabled
+               placeholder="Inicie a sessão para conversar com o robô">
+      </form>
+    </section>
+  </div>
+
+  <aside>
+    <div class="painel">
+      <h2>Estado</h2>
+      <ul class="estados">
+        <li>Servidor <span id="stServidor" class="selo ruim">desconectado</span></li>
+        <li>Robô <span id="stRobo" class="selo ruim">ausente</span></li>
+        <li>Conexão <span id="stConexao" class="selo neutro">sem sessão</span></li>
+      </ul>
+    </div>
+
+    <div class="painel">
+      <h2>Latência</h2>
+      <div class="latencias">
+        <div>
+          <label>Atraso do vídeo</label>
+          <div class="latencia"><span id="atrasoVideo" class="valor">—</span><span class="un"> ms</span></div>
+        </div>
+        <div>
+          <label>Ida e volta (RTT)</label>
+          <div class="latencia"><span id="latencia" class="valor">—</span><span class="un"> ms</span></div>
+        </div>
+      </div>
+      <div class="dica" id="dicaAtraso">Meta: abaixo de 300 ms. O atraso do vídeo vai da captura no robô até a tela e aparece quando o robô roda com MARCAR_TIMESTAMP=1.</div>
+    </div>
+
+    <div class="painel">
+      <h2>Qualidade da transmissão</h2>
+      <ul class="estados metricas">
+        <li>Vídeo recebido <span id="mFps">—</span></li>
+        <li>Pacotes perdidos <span id="mPerda">—</span></li>
+        <li>Jitter do áudio <span id="mJitter">—</span></li>
+        <li>Buffer de reprodução <span id="mBuffer">—</span></li>
+      </ul>
+    </div>
+
+    <div class="painel">
+      <h2>Áudio</h2>
+      <label>Seu microfone</label>
+      <div class="medidor"><div id="nivelMic"></div></div>
+      <label>Áudio do robô</label>
+      <div class="medidor"><div id="nivelRobo"></div></div>
+    </div>
+
+    <div class="painel" id="painelAtendimento">
+      <h2>Atendimento ao cliente</h2>
+      <ul class="estados">
+        <li>Cliente <span id="stCliente" class="selo ruim">ausente</span></li>
+      </ul>
+      <div id="caixaPedido" class="pedido oculto">
+        <strong>Um cliente quer falar com o robô.</strong>
+        <div class="botoes">
+          <button id="btnAceitar" class="primario">Aceitar</button>
+          <button id="btnRecusar">Recusar</button>
+        </div>
+      </div>
+      <div id="caixaAtendimento" class="oculto">
+        <div class="dica">Atendimento em andamento (áudio e chat; o cliente não vê o vídeo). Você acompanha a conversa aqui.</div>
+        <div id="chatAtendimento" class="chat-atend"></div>
+        <form id="formMensagem" class="msg-linha" autocomplete="off">
+          <input id="msgOperador" type="text" maxlength="500" placeholder="Escrever ao cliente…">
+          <button type="submit">Enviar</button>
+        </form>
+        <button id="btnEncerrarAtendimento" class="largo">Encerrar atendimento</button>
+      </div>
+    </div>
+
+    <div class="botoes">
+      <button id="btnIniciar" class="primario" disabled>Iniciar</button>
+      <button id="btnEncerrar" disabled>Encerrar</button>
+    </div>
+    <pre id="log"></pre>
+  </aside>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

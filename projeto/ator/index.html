@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ator do robô</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<header>
+  <h1>Ator do robô</h1>
+  <div class="quem-responde">
+    <span class="dica">Quem responde:</span>
+    <div class="seletor-modo" role="group" aria-label="Quem responde ao cliente">
+      <button id="btnModoManual" type="button" class="ativo" aria-pressed="true">Manual (você)</button>
+      <button id="btnModoIa" type="button" aria-pressed="false" disabled>IA</button>
+    </div>
+    <span class="dica">tecla I</span>
+  </div>
+  <ul class="selos">
+    <li>Servidor <span id="stServidor" class="selo ruim">desconectado</span></li>
+    <li>Cliente <span id="stCliente" class="selo neutro">ausente</span></li>
+    <li>Conexão <span id="stConexao" class="selo neutro">sem sessão</span></li>
+    <li>Atraso <span id="stRtt" class="selo neutro">—</span></li>
+  </ul>
+</header>
+
+<main>
+  <div class="coluna">
+    <section class="video">
+      <video id="videoCliente" autoplay playsinline></video>
+      <canvas id="camadaVisao" class="camada-visao"></canvas>
+      <div id="semVideo" class="sem-video">Esperando o cliente abrir a tela do robô…</div>
+      <div id="legenda" class="legenda oculto"></div>
+    </section>
+
+    <section class="painel conversa">
+      <div class="titulo-linha">
+        <h2>O que o cliente disse</h2>
+        <span id="stFala" class="dica">reconhecimento de fala: —</span>
+        <button id="btnBaixar" type="button" class="pequeno">Baixar conversa</button>
+      </div>
+      <div id="historico" class="historico"></div>
+    </section>
+  </div>
+
+  <aside>
+    <section class="painel">
+      <h2>Sua voz</h2>
+      <label>Microfone (o que o cliente ouve)</label>
+      <div class="medidor"><div id="nivelMic"></div></div>
+      <label class="check"><input id="chkRobotica" type="checkbox" checked> Voz robótica</label>
+      <div class="faixa">
+        <span class="dica">leve</span>
+        <input id="intensidade" type="range" min="0" max="100" value="55">
+        <span class="dica">forte</span>
+      </div>
+      <label class="check"><input id="chkMonitor" type="checkbox"> Ouvir minha voz (só com fone)</label>
+      <button id="btnMudo" type="button" class="largo">Silenciar microfone (M)</button>
+    </section>
+
+    <section class="painel">
+      <h2>Áudio do cliente (o que você escuta)</h2>
+      <div class="medidor"><div id="nivelCliente"></div></div>
+      <div class="agora">Rede do áudio: <b id="redeAudio">—</b></div>
+      <p id="dicaRede" class="dica oculto"></p>
+      <label for="perfilAudio">Tratamento</label>
+      <select id="perfilAudio">
+        <option value="natural">Natural (voz mais fiel)</option>
+        <option value="equilibrado" selected>Equilibrado (tira ruído com IA)</option>
+        <option value="maximo">Máximo (também abaixa o chiado entre as falas)</option>
+        <option value="personalizado">Personalizado</option>
+      </select>
+      <label class="check"><input id="chkReducao" type="checkbox" checked> Reduzir ruído com IA (RNNoise)</label>
+      <label class="check"><input id="chkPortao" type="checkbox"> Abaixar o chiado entre as falas</label>
+      <label class="check"><input id="chkRealce" type="checkbox" checked> Realçar a voz (mais clara)</label>
+      <label class="check"><input id="chkAbafarEco" type="checkbox" checked> Abafar o eco da sua voz e da voz do robô</label>
+      <label>Volume do cliente</label>
+      <div class="faixa">
+        <span class="dica">baixo</span>
+        <input id="volumeCliente" type="range" min="50" max="400" value="160">
+        <span class="dica">alto</span>
+      </div>
+      <p id="estadoAudio" class="dica">o tratamento liga quando você clicar em Começar</p>
+      <button id="btnGravarAudio" type="button" class="pequeno largo">Gravar 10 s para análise (antes/depois)</button>
+    </section>
+
+    <section class="painel">
+      <h2>Rosto do robô</h2>
+      <div class="agora">Agora na tela: <b id="rostoAgora">—</b></div>
+      <label class="check"><input id="chkAuto" type="checkbox" checked> Reagir sozinho ao que o cliente fala</label>
+      <div class="expressoes" id="expressoes"></div>
+      <label class="check"><input id="chkFixar" type="checkbox"> Manter a expressão escolhida (senão volta em 8 s)</label>
+    </section>
+
+    <section class="painel" id="painelVisao">
+      <h2>Visão do robô</h2>
+      <p id="estadoVisao" class="dica">a detecção de rosto liga quando você clicar em Começar</p>
+      <div class="agora">Câmera: <b id="infoVisao">—</b></div>
+      <label class="check"><input id="chkOlhar" type="checkbox" checked> Olhos do robô seguem a pessoa</label>
+      <label class="check"><input id="chkEspelhar" type="checkbox" checked> Reagir ao rosto (sorriso, surpresa)</label>
+      <label class="check"><input id="chkIaVe" type="checkbox" checked> IA enxerga a câmera (foto junto com a pergunta)</label>
+      <label class="check"><input id="chkCumprimentar" type="checkbox" checked> IA cumprimenta quando alguém aparece</label>
+      <button id="btnOQueVe" type="button" class="pequeno largo">O que a IA está vendo? (V)</button>
+    </section>
+
+    <section class="painel" id="painelIa">
+      <h2>Respostas da IA</h2>
+      <div id="situacaoIa" class="situacao manual">Manual: só você responde</div>
+      <label class="dica">Quando a IA estiver ligada (botão "IA" no topo):</label>
+      <label class="check"><input type="radio" name="subIa" value="sugerir" checked> Sugerir: você aprova antes de falar</label>
+      <label class="check"><input type="radio" name="subIa" value="automatica"> Automática: o robô responde sozinho</label>
+      <label>Esperar o cliente terminar de falar: <b id="esperaIaTxt">1,6 s</b> de silêncio</label>
+      <div class="faixa">
+        <span class="dica">rápido</span>
+        <input id="esperaIa" type="range" min="600" max="4000" step="100" value="1600">
+        <span class="dica">paciente</span>
+      </div>
+      <label class="check"><input id="chkEsperarVez" type="checkbox" checked> Nunca falar por cima de você, do robô ou do cliente</label>
+      <label class="check"><input id="chkAtorAssume" type="checkbox" checked> Se você responder pelo microfone, a IA fica quieta</label>
+      <p id="estadoIa" class="dica">verificando a IA…</p>
+      <div id="sugestaoIa" class="sugestao oculto">
+        <div class="dica">Sugestão da IA <b id="emocaoIa"></b></div>
+        <textarea id="textoIa" rows="3" maxlength="500"></textarea>
+        <div class="botoes-linha">
+          <button id="btnFalarIa" type="button" class="primario">Falar (Enter)</button>
+          <button id="btnDescartarIa" type="button">Descartar</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="painel">
+      <h2>Robô fala por texto</h2>
+      <form id="formFalar" class="linha" autocomplete="off">
+        <input id="textoFalar" type="text" maxlength="500" placeholder="Digite e aperte Enter (voz sintetizada)">
+      </form>
+      <div class="frases" id="frases"></div>
+      <button id="btnCalar" type="button" class="pequeno largo">Parar a voz sintetizada</button>
+    </section>
+
+    <pre id="log"></pre>
+  </aside>
+</main>
+
+<!-- Começar: libera microfone e áudio (o navegador exige um clique) -->
+<section id="inicio" class="inicio">
+  <div class="cartao">
+    <h1>Você vai ser o robô</h1>
+    <ol>
+      <li><b>Use fone de ouvido.</b> Sem fone, a voz do cliente sai na sua caixa de som, volta pelo seu microfone e ele se ouve.</li>
+      <li>Clique em <b>Começar</b> e permita o microfone.</li>
+      <li>No outro computador, abra o link de <b>CLIENTE</b> e clique em Começar lá.</li>
+    </ol>
+    <input id="token" type="password" placeholder="Código do robô (se não veio no link)" autocomplete="off">
+    <p id="avisoInicio" class="aviso"></p>
+    <button id="btnComecar" type="button" class="primario largo">Começar</button>
+  </div>
+</section>
+
+<script src="visao.js"></script>
+<script src="audio_cliente.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

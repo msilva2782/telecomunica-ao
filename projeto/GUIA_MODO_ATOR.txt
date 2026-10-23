@@ -1,0 +1,88 @@
+GUIA DO MODO ATOR  (uma pessoa finge ser o robô)
+=================================================
+
+COMO FUNCIONA
+  - Computador do ATOR (quem faz o papel do robô): roda o servidor e abre a página do ator.
+    Vê e ouve a pessoa, lê a legenda do que ela fala e responde pelo microfone. A voz sai robótica.
+  - Computador do CLIENTE (a pessoa da faculdade): mostra só o rosto do robô, em tela cheia.
+    O rosto mexe a boca quando o "robô" fala e muda de expressão conforme o que a pessoa diz
+    (fica triste com coisa triste, sorri com coisa boa, ri com "kkk", fica surpreso, pensativo...).
+
+O QUE PRECISA
+  - Os dois computadores na MESMA rede Wi-Fi (ou use -Internet, abaixo).
+  - Computador do ATOR: Windows 10/11, microfone e FONE DE OUVIDO. Não precisa instalar Python
+    (o iniciar_ator.bat usa o Python da pasta python_portatil; veja COMECE_AQUI.txt).
+  - Computador do CLIENTE: Chrome ou Edge, webcam, microfone e caixa de som. Internet ligada
+    (o Chrome/Edge usa a internet para entender a fala).
+
+PASSO A PASSO
+  1. No computador do ATOR, abra a pasta do projeto e dê dois cliques em  iniciar_ator.bat
+     (é o mesmo que  iniciar.bat -Ator). Se a pasta ainda não tem python_portatil, ele monta
+     uma vez (precisa de internet, 1 a 5 minutos).
+  2. Se o Windows perguntar sobre o Firewall, clique em "Permitir acesso".
+  3. A página do ator abre sozinha. Se o navegador disser "Sua conexão não é particular",
+     clique em "Avançado" e depois em "Continuar para 127.0.0.1". Clique em Começar e permita
+     o microfone. Coloque o fone.
+  4. No computador do CLIENTE, abra o link de CLIENTE (está no arquivo LINKS.txt, na pasta do projeto).
+     Ele começa com https://192.168... Faça o mesmo "Avançado > Continuar".
+  5. Ainda no computador do cliente: clique em "Testar câmera e microfone", permita os dois,
+     confira se tudo ficou verde e clique em Começar. A tela vira o rosto do robô em tela cheia.
+  6. Chame a pessoa. Pronto: você a vê e ouve na página do ator, e ela conversa com o "robô".
+
+DICAS PARA PARECER UMA IA
+  - Ajuste a "Voz robótica" antes, marcando "Ouvir minha voz" (com fone) para se escutar.
+  - Fale pausado e sem gírias. Uma pequena espera antes de responder parece "processamento".
+  - Teclas na página do ator:  0 Neutro, 1 Feliz, 2 Rindo, 3 Triste, 4 Surpreso, 5 Pensativo,
+    6 Preocupado,  M silencia o seu microfone.  0 também devolve o rosto ao modo automático.
+  - "Robô fala por texto": o que você digitar sai numa voz sintetizada no computador do cliente.
+    Há frases prontas (apresentação, "pode repetir?" etc.).
+  - "Baixar conversa" salva o que o cliente disse, com horário e emoção detectada.
+
+NO COMPUTADOR DO CLIENTE (teclas)
+  - D  mostra/esconde o diagnóstico (conexão, fala entendida, expressão).
+  - P  volta para a tela de preparo.   F  tela cheia.   Esc  sai da tela cheia.
+  - Um ponto minúsculo no canto inferior direito indica a conexão (verde quase invisível = ok).
+
+SE ALGO DER ERRADO
+  - "precisa de HTTPS" na tela do cliente: o link tem que começar com https://.
+  - O cliente não conecta: confira se os dois estão na mesma rede e se o Firewall do Windows
+    permitiu o Python. Se a rede estiver como "Pública" no Windows do ator, troque para "Privada"
+    (Configurações > Rede e Internet > Wi-Fi > Propriedades) ou permita também redes públicas. Rede da faculdade às vezes bloqueia: use  iniciar.bat -Ator -Internet
+    (precisa do cloudflared:  winget install Cloudflare.cloudflared).
+  - O rosto não reage à fala: a legenda não aparece na página do ator = o reconhecimento de fala
+    do cliente parou. Ele precisa de Chrome ou Edge e de internet. Aperte D no cliente para ver o erro.
+  - O cliente se ouve com eco: o ator está sem fone.
+  - Para trocar os links (por segurança), apague o arquivo tokens_ator.txt e rode de novo.
+
+RESPOSTAS DE IA (opcional)
+  - No topo da página do ator: botão "Quem responde: Manual / IA" (tecla I). Começa sempre em Manual.
+    Com a IA ligada, o painel "Respostas da IA" escolhe Sugerir (você aprova antes de o robô falar)
+    ou Automática (o robô responde sozinho a perguntas simples).
+  - Precisa de uma chave da API do Google Gemini. Passo a passo em GUIA_IA.txt.
+  - O que o cliente fala é enviado ao Google para gerar a resposta: avise quem participa.
+  - Se a IA falhar, o painel avisa e você continua respondendo pelo microfone ou pelo texto.
+
+ÁUDIO DO CLIENTE (para ouvir bem)
+  Painel "Áudio do cliente":
+  - "Rede do áudio": se "reconstruído" passar de ~3% (fica vermelho), a voz robótica e picotada
+    vem da REDE, não do tratamento: aproxime os computadores do roteador, use cabo, prefira o
+    Wi-Fi 5 GHz, feche downloads/vídeos. Nenhum filtro conserta áudio que se perdeu no caminho.
+  - Tratamento: Natural (voz mais fiel), Equilibrado (padrão, tira ruído com IA) ou Máximo
+    (também abaixa o chiado entre as falas). Se a voz soar robótica ou abafada, teste o Natural.
+  - "Abafar o eco": enquanto você fala, o que volta do cliente é quase só a sua voz saindo da
+    caixa de som dele; o som dele abaixa nesses momentos.
+  - Volume vai até 400%. Quem fala longe do microfone é levantado automaticamente.
+  - "Gravar 10 s para análise": salva dois WAV (como chegou e como ficou) para comparar ou
+    mandar para análise.
+  - No computador do cliente: caixa de som em volume moderado e a pessoa a até 1 metro do
+    microfone. Webcam USB com microfone, ou um microfone de mesa barato, ajuda muito.
+
+VISÃO DO ROBÔ (câmera do cliente)
+  - Painel "Visão do robô": os olhos do robô seguem a pessoa, ele sorri quando ela sorri e,
+    com a IA ligada, cumprimenta quem aparece e responde sobre o que vê ("o que você está
+    vendo?"). Tecla V: pergunta à IA o que ela está vendo (aparece só para você).
+  - Detalhes e cuidados (a foto vai ao Google quando a IA responde): GUIA_IA.txt.
+
+DEPOIS DA CONVERSA
+  É boa prática contar à pessoa, no fim, que era um experimento com uma pessoa fazendo o papel
+  do robô (técnica "Mágico de Oz", comum em pesquisa de interação humano-robô).

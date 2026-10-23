@@ -1,0 +1,5 @@
+﻿ATOR (quem faz o papel do robo, NESTE computador, com fone):
+  https://127.0.0.1:8000/ator/?token=3t57IwwgL8m10K16k0aq
+
+CLIENTE (abra no OUTRO computador, em Chrome ou Edge):
+  https://192.168.100.22:8000/conversa/?token=Lacxy601EnWcxTI1AYBh

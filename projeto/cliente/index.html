@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Falar com o robô</title>
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<main>
+  <h1>Falar com o robô</h1>
+
+  <section id="telaLogin" class="cartao">
+    <p>Digite o código de acesso que você recebeu.</p>
+    <form id="formLogin">
+      <input id="token" type="password" placeholder="Código de acesso" autocomplete="off">
+      <button class="primario" type="submit">Entrar</button>
+    </form>
+    <p id="erroLogin" class="aviso"></p>
+  </section>
+
+  <section id="telaPrincipal" class="cartao oculto">
+    <ul class="estados">
+      <li>Robô <span id="stRobo" class="selo ruim">offline</span></li>
+      <li>Operador <span id="stOperador" class="selo ruim">offline</span></li>
+    </ul>
+
+    <p id="mensagem" class="mensagem"></p>
+
+    <div class="acoes">
+      <button id="btnPedir" class="primario grande" disabled>Solicitar atendimento</button>
+      <button id="btnCancelar" class="oculto">Cancelar pedido</button>
+    </div>
+
+    <div id="painelSessao" class="oculto">
+      <div class="medidores">
+        <div><label>Seu microfone</label><div class="medidor"><div id="nivelMic"></div></div></div>
+        <div><label>Voz do robô</label><div class="medidor"><div id="nivelRobo"></div></div></div>
+      </div>
+      <div class="acoes">
+        <button id="btnMudo" disabled>Silenciar microfone</button>
+        <button id="btnEncerrar">Encerrar atendimento</button>
+      </div>
+
+      <div class="terminal">
+        <div class="term-titulo">Conversa</div>
+        <div id="termSaida" class="term-saida"></div>
+        <form id="termForm" class="term-linha" autocomplete="off">
+          <span class="prompt">&gt;</span>
+          <input id="termEntrada" type="text" maxlength="500" disabled placeholder="Aguardando conexão…">
+        </form>
+        <div class="dica">Comandos do robô: ajuda, status, hora, fps, eco &lt;texto&gt;</div>
+      </div>
+    </div>
+
+    <div class="camera-bloco">
+      <div class="camera-topo">
+        <label>Sua câmera</label>
+        <button id="btnCamera" type="button">Ligar câmera</button>
+      </div>
+      <div class="camera">
+        <video id="minhaCamera" autoplay muted playsinline></video>
+        <div id="semCamera" class="sem-camera">Câmera desligada</div>
+      </div>
+      <p id="avisoCamera" class="aviso-camera">Só você vê esta imagem: ela não é enviada ao robô nem ao operador.</p>
+    </div>
+  </section>
+
+  <audio id="audioRobo" autoplay></audio>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

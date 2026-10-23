@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robô</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<canvas id="rosto"></canvas>
+<audio id="vozRobo" autoplay></audio>
+<div id="ponto" class="ponto" title="Tecla D: diagnóstico"></div>
+
+<!-- Tela de preparo: quem monta o experimento vê; some ao clicar em Começar -->
+<section id="preparo" class="preparo">
+  <div class="cartao">
+    <h1>Preparar a tela do robô</h1>
+    <p class="sub">Confira os itens e clique em <strong>Começar</strong>. Depois disso a tela mostra só o rosto do robô.</p>
+
+    <div id="blocoToken" class="linha-token oculto">
+      <input id="token" type="password" placeholder="Código de acesso (token do cliente)" autocomplete="off">
+    </div>
+
+    <div class="previa">
+      <video id="previa" autoplay muted playsinline></video>
+      <div id="semPrevia" class="sem-previa">Câmera ainda não ligada</div>
+    </div>
+
+    <ul class="checagens">
+      <li><span>Câmera</span><b id="ckCamera" class="ck">—</b></li>
+      <li><span>Microfone</span><span class="medidor"><span id="nivelMic"></span></span><b id="ckMic" class="ck">—</b></li>
+      <li><span>Entender a fala</span><b id="ckFala" class="ck">—</b></li>
+      <li><span>Servidor</span><b id="ckServidor" class="ck">—</b></li>
+      <li><span>Robô (ator)</span><b id="ckAtor" class="ck">—</b></li>
+    </ul>
+
+    <p id="avisoPreparo" class="aviso"></p>
+    <div class="botoes">
+      <button id="btnTestar" type="button">Testar câmera e microfone</button>
+      <button id="btnComecar" type="button" class="primario">Começar</button>
+    </div>
+    <p class="dica">Tela cheia: começa sozinha (Esc sai). Tecla <b>D</b> mostra o diagnóstico. Use Chrome ou Edge.</p>
+  </div>
+</section>
+
+<!-- Diagnóstico discreto (tecla D) -->
+<aside id="diag" class="diag oculto">
+  <div><b>Conexão:</b> <span id="dConexao">—</span></div>
+  <div><b>Fala:</b> <span id="dFala">—</span></div>
+  <div><b>Ouvido:</b> <span id="dTexto">—</span></div>
+  <div><b>Expressão:</b> <span id="dExpressao">—</span></div>
+</aside>
+
+<script src="emocao.js"></script>
+<script src="rosto.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
